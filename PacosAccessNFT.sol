@@ -22,9 +22,10 @@ contract PacosAccessNFT is
     uint256 constant MAX_NFTS = 100;
     uint256 public nftsMinted = 0;
     uint256 public feeAmount = 0.1 ether;
-    string public baseURI = "ipfs://asdkjecrio eohai j23891230 s sd/";
+    string public baseURI = "ipfs://QmZea6tSnW3KxZKjCzoxHzpmQV9bW5GniZvbCPkpioTV2r/";
 
-    constructor() ERC721("PacosAccessNFT", "PAN") {}
+    constructor() ERC721("PacosAccessNFT", "PAN") {
+    }
 
     function setBaseURI(string memory uri) public onlyOwner {
         baseURI = uri;
@@ -38,13 +39,13 @@ contract PacosAccessNFT is
         _unpause();
     }
 
-    function safeMint(address to, uint256 tokenId) public payable {
+    function safeMint(address to) public payable {
         require(nftsMinted < MAX_NFTS, "Maximum number of NFTs minted");
         require(msg.value >= feeAmount, "Insufficient payment for minting");
 
         nftsMinted = nftsMinted.add(1);
-        _safeMint(to, tokenId);
-        _setTokenURI(tokenId, baseURI);
+        _safeMint(to, nftsMinted);
+        _setTokenURI(nftsMinted, baseURI);
     }
 
     function withdraw() external onlyOwner {
@@ -85,7 +86,7 @@ contract PacosAccessNFT is
             "ERC721Metadata: URI query for nonexistent token"
         );
 
-        string memory jsonFile = "PacoAccessNFT.json";
+        string memory jsonFile = "PacosAccessNFT.json";
 
         return
             bytes(baseURI).length > 0
