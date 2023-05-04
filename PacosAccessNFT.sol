@@ -46,15 +46,8 @@ contract PacosAccessNFT is
         nftsMinted = nftsMinted.add(1);
         _safeMint(to, nftsMinted);
         _setTokenURI(nftsMinted, baseURI);
-    }
 
-    function withdraw() external onlyOwner {
-        (bool success, ) = owner().call{value: address(this).balance}("");
-        require(success, "Transfer failed");
-    }
-
-    function getContractBalance() public view onlyOwner returns (uint256) {
-        return address(this).balance;
+        payable(owner()).transfer(msg.value);
     }
 
     function _beforeTokenTransfer(
